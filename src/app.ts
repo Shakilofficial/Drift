@@ -1,5 +1,8 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
+import router from './routes';
+import sendResponse from './utils/sendResponse';
+import notFound from './middlewares/notFound';
 
 const app: Application = express();
 
@@ -7,14 +10,30 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+//Application Routes
+app.use('/api/v1', router);
+
+// Health Check Route
 app.get('/', (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Drift API' });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: '🌐 Drift server is live 🚀',
+    data: null,
+  });
 });
 
-// Health Check
-app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok', message: 'Server is running' });
+// Test Route
+app.get('/test', (req: Request, res: Response) => {
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Test route is working 🚀 ',
+    data: null,
+  });
 });
+
+//Not Found Route
+app.use(notFound);
 
 export default app;
