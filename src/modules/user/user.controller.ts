@@ -63,7 +63,7 @@ const deleteUser = catchAsync(async (req, res) => {
   });
 });
 
-export const userController = {
+export const userControllers = {
   createUser,
   getAllUsers,
   getSingleUser,

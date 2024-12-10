@@ -1,6 +1,6 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import { userController } from './user.controller';
+import { userControllers } from './user.controller';
 import { userValidations } from './user.validation';
 
 const router = express.Router();
@@ -8,15 +8,15 @@ const router = express.Router();
 router.post(
   '/',
   validateRequest(userValidations.createUserValidationSchema),
-  userController.createUser,
+  userControllers.createUser,
 );
-router.get('/', userController.getAllUsers);
-router.get('/:id', userController.getSingleUser);
+router.get('/', userControllers.getAllUsers);
+router.get('/:id', userControllers.getSingleUser);
 router.patch(
   '/:id',
   validateRequest(userValidations.updateUserValidationSchema),
-  userController.updateUser,
+  userControllers.updateUser,
 );
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id', userControllers.deleteUser);
 
 export const userRoutes = router;
