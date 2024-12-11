@@ -31,8 +31,16 @@ const deleteTourFromDB = async (id: string) => {
 };
 
 const getNextScheduleFromDB = async (id: string) => {
-  const result = await Tour.getNextNearestStartDateAndEndData(id);
-  return result;
+  const tour = await Tour.findById(id);
+  if (!tour) {
+    throw new Error('Tour not found');
+  }
+  const schedule = tour.getNextNearestStartDateAndEndData();
+
+  return {
+    tourDetails: tour,
+    schedule,
+  };
 };
 
 export const tourServices = {

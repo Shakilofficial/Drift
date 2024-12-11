@@ -62,6 +62,7 @@ const deleteTour = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 //Get next schedule
 const getNextSchedule = catchAsync(async (req, res) => {
   const id = req.params.id;

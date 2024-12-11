@@ -1,8 +1,9 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
+import globalErrorHandler from './middlewares/globalErrorHandler';
+import notFound from './middlewares/notFound';
 import router from './routes';
 import sendResponse from './utils/sendResponse';
-import notFound from './middlewares/notFound';
 
 const app: Application = express();
 
@@ -32,6 +33,9 @@ app.get('/test', (req: Request, res: Response) => {
     data: null,
   });
 });
+
+//global error handler
+app.use(globalErrorHandler);
 
 //Not Found Route
 app.use(notFound);

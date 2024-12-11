@@ -1,5 +1,7 @@
-import { HydratedDocument, Model } from 'mongoose';
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+import { Model } from 'mongoose';
 
+// Define ITour interface for the Tour document
 export interface ITour {
   name: string;
   description: string;
@@ -8,7 +10,7 @@ export interface ITour {
   price: number;
   coverImage: string;
   images: string[];
-  startDates: string[];
+  startDates: Date[]; // Ensure these are proper Date objects
   startLocation: string;
   locations: string[];
   slug: string;
@@ -16,6 +18,7 @@ export interface ITour {
   isDeleted: boolean;
 }
 
+// Define ITourMethods for instance methods
 export interface ITourMethods {
   getNextNearestStartDateAndEndData(): {
     nearestStartDate: Date | null;
@@ -23,13 +26,8 @@ export interface ITourMethods {
   };
 }
 
-interface TTourModel
-  extends Model<ITour, Record<string, unknown>, ITourMethods> {
-  startDates: Date[];
-  durationHours: number;
-  getNextNearestStartDateAndEndData(): Promise<
-    HydratedDocument<ITour, ITourMethods>
-  >;
-}
+// Define TTourModel for static methods
+export interface TTourModel
+  extends Model<ITour, Record<string, unknown>, ITourMethods> {}
 
 export default TTourModel;
