@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { ITour } from './tour.interface';
 import Tour from './tour.model';
 
@@ -33,9 +30,9 @@ const deleteTourFromDB = async (id: string) => {
   return result;
 };
 
-const getNextSchedule = async (id: string) => {
-  const result = await Tour.getNextNearestStartDateAndEndData();
-  return { result };
+const getNextScheduleFromDB = async (id: string) => {
+  const result = await Tour.getNextNearestStartDateAndEndData(id);
+  return result;
 };
 
 export const tourServices = {
@@ -44,5 +41,5 @@ export const tourServices = {
   getSingleTourFromDB,
   updateTourIntoDB,
   deleteTourFromDB,
-  getNextSchedule,
+  getNextScheduleFromDB,
 };

@@ -58,20 +58,39 @@ const tourSchema = new Schema<ITour, TTourModel, ITourMethods>(
   { timestamps: true },
 );
 
+// Define a static method on the schema
 tourSchema.static(
   'getNextNearestStartDateAndEndData',
-  function getNextNearestStartDateAndEndData() {
+  async function getNextNearestStartDateAndEndData(id: string) {
+    // Fetch the tour by ID and select specific fields
+    const tour = await this.findById(id).select('startDates durationHours');
+
+    if (!tour) {
+      throw new Error('Tour not found');
+    }
+
     const today = new Date();
 
-    const futureDates = this.startDates.filter((startDate: Date) => {
+    // Ensure `startDates` is treated as an array of Dates
+    const startDates = (tour.startDates || []) as unknown as Date[];
+
+    const futureDates = startDates.filter((startDate) => {
       return startDate > today;
     });
 
-    futureDates.sort((a: Date, b: Date) => a.getTime() - b.getDate());
+    // Sort future dates
+    futureDates.sort((a, b) => a.getTime() - b.getTime());
+
+    if (futureDates.length === 0) {
+      return {
+        nearestStartDate: null,
+        estimatedEndDate: null,
+      };
+    }
 
     const nearestStartDate = futureDates[0];
     const estimatedEndDate = new Date(
-      nearestStartDate.getTime() + this.durationHours * 60 * 60 * 1000,
+      nearestStartDate.getTime() + (tour.durationHours || 0) * 60 * 60 * 1000,
     );
 
     return {
@@ -81,6 +100,7 @@ tourSchema.static(
   },
 );
 
+// Create and export the Tour model
 const Tour = model<ITour, TTourModel>('Tour', tourSchema);
 
 export default Tour;

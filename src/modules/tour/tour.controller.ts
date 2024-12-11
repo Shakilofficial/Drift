@@ -64,8 +64,8 @@ const deleteTour = catchAsync(async (req, res) => {
 });
 //Get next schedule
 const getNextSchedule = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await tourServices.getNextSchedule(id);
+  const id = req.params.id;
+  const result = await tourServices.getNextScheduleFromDB(id);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,

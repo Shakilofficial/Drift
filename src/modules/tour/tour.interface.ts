@@ -3,7 +3,7 @@ import { HydratedDocument, Model } from 'mongoose';
 export interface ITour {
   name: string;
   description: string;
-  durationHours: number;
+  durationHours?: number;
   averageRating: number;
   price: number;
   coverImage: string;
