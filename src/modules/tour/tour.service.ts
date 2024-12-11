@@ -1,5 +1,5 @@
 import { ITour } from './tour.interface';
-import Tour from './tour.model';
+import { Tour } from './tour.model';
 
 const createTourIntoDB = async (payload: ITour) => {
   const result = await Tour.create(payload);

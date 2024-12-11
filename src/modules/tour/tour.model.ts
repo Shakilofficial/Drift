@@ -81,7 +81,27 @@ tourSchema.methods.getNextNearestStartDateAndEndData = function () {
   };
 };
 
-// Create and export the Tour model
-const Tour = model<ITour, TTourModel>('Tour', tourSchema);
+//filter out deleted tours
+tourSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
-export default Tour;
+tourSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
+
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+// Define instance method for checking if tour exists
+tourSchema.statics.isTourExist = async function (id: string) {
+  const existingTour = await Tour.findOne({ id });
+  return existingTour;
+};
+
+// Create and export the Tour model
+export const Tour = model<ITour, TTourModel>('Tour', tourSchema);

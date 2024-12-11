@@ -1,5 +1,5 @@
 import { IUSer } from './user.interface';
-import User from './user.model';
+import { User } from './user.model';
 
 const createUserIntoDB = async (payload: IUSer) => {
   const result = await User.create(payload);

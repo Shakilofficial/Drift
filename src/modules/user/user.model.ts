@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { IUSer } from './user.interface';
+import { IUSer, UserModel } from './user.interface';
 
-const userSchema = new Schema<IUSer>(
+const userSchema = new Schema<IUSer, UserModel>(
   {
     name: {
       type: String,
@@ -54,6 +54,26 @@ const userSchema = new Schema<IUSer>(
   { timestamps: true },
 );
 
-const User = model<IUSer>('User', userSchema);
+//filter out deleted users
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
-export default User;
+userSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
+
+userSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+// Define instance method for checking if user exists
+userSchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await User.findOne({ id });
+  return existingUser;
+};
+
+export const User = model<IUSer, UserModel>('User', userSchema);
