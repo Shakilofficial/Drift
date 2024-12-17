@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
+
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import notFound from './middlewares/notFound';
 import router from './routes';
@@ -36,7 +37,6 @@ app.get('/test', (req: Request, res: Response) => {
 
 //global error handler
 app.use(globalErrorHandler);
-
 //Not Found Route
 app.use(notFound);
 

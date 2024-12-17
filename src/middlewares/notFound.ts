@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 
-const notFound = (req: Request, res: Response) => {
+// Global Not Found handler middleware
+const notFound = (req: Request, res: Response): void => {
   res.status(404).json({
-    status: 'fail',
-    message: `Route Not Found for ${req.originalUrl} 🚨`,
+    success: false,
+    statusCode: 404,
+    message: `Route not found for ${req.originalUrl} 🚨`,
   });
 };
 

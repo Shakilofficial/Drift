@@ -21,8 +21,8 @@ const registerValidationSchema = z.object({
     password: z
       .string({ invalid_type_error: 'Password must be a string' })
       .trim()
-      .min(6, { message: 'Password must be at least 8 characters long' })
-      .max(30, { message: 'Password must be at most 30 characters long' }),
+      .min(6, { message: 'Password must be at least 6 characters long' })
+      .max(20, { message: 'Password must be at most 20 characters long' }),
     phone: z
       .string({ invalid_type_error: 'Phone number must be a string' })
       .trim()
@@ -35,6 +35,19 @@ const registerValidationSchema = z.object({
   }),
 });
 
+const loginValidationSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email({ message: 'Email is not valid' }),
+    password: z
+      .string({ required_error: 'Password is required' })
+      .min(6, { message: 'Password must be at least 8 characters long' })
+      .max(20, { message: 'Password must be at most 20 characters long' }),
+  }),
+});
+
 export const authValidations = {
   registerValidationSchema,
+  loginValidationSchema,
 };
