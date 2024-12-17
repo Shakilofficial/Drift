@@ -5,11 +5,6 @@ import { userValidations } from './user.validation';
 
 const router = express.Router();
 
-router.post(
-  '/',
-  validateRequest(userValidations.createUserValidationSchema),
-  userControllers.createUser,
-);
 router.get('/', userControllers.getAllUsers);
 router.get('/:id', userControllers.getSingleUser);
 router.patch(

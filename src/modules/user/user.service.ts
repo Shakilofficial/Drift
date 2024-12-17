@@ -1,11 +1,6 @@
 import { IUSer } from './user.interface';
 import { User } from './user.model';
 
-const createUserIntoDB = async (payload: IUSer) => {
-  const result = await User.create(payload);
-  return result;
-};
-
 const getAllUsersFromDB = async () => {
   const result = await User.find();
   return result;
@@ -31,7 +26,6 @@ const deleteUserFromDB = async (id: string) => {
 };
 
 export const userServices = {
-  createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,

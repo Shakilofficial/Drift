@@ -3,18 +3,6 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { userServices } from './user.service';
 
-// Create user
-const createUser = catchAsync(async (req, res) => {
-  const payload = req.body;
-  const result = await userServices.createUserIntoDB(payload);
-  sendResponse(res, {
-    statusCode: StatusCodes.CREATED,
-    success: true,
-    message: 'User created successfully 👤',
-    data: result,
-  });
-});
-
 // Get all users
 const getAllUsers = catchAsync(async (req, res) => {
   const result = await userServices.getAllUsersFromDB();
@@ -64,7 +52,6 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 export const userControllers = {
-  createUser,
   getAllUsers,
   getSingleUser,
   updateUser,

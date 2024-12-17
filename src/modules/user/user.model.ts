@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
+import bcrypt from 'bcrypt';
 import { model, Schema } from 'mongoose';
+import config from '../../config';
 import { IUSer, UserModel } from './user.interface';
 
 const userSchema = new Schema<IUSer, UserModel>(
@@ -20,6 +23,13 @@ const userSchema = new Schema<IUSer, UserModel>(
       required: [true, 'Email is required'],
       unique: true,
     },
+    password: {
+      type: String,
+      select: false,
+      required: [true, 'Password is required'],
+      minlength: [6, 'Password must be at least 8 characters long'],
+      maxlength: [30, 'Password must be at most 30 characters long'],
+    },
     phone: {
       type: String,
       required: [true, 'Phone number is required'],
@@ -32,7 +42,6 @@ const userSchema = new Schema<IUSer, UserModel>(
     },
     role: {
       type: String,
-      required: [true, 'Role is required'],
       enum: {
         values: ['admin', 'user'],
         message: '{VALUE} is not valid, please provide a valid role',
@@ -53,6 +62,22 @@ const userSchema = new Schema<IUSer, UserModel>(
   },
   { timestamps: true },
 );
+
+//hashpassword
+userSchema.pre('save', async function name(next) {
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// set '' after saving password
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
 
 //filter out deleted users
 userSchema.pre('find', function (next) {
