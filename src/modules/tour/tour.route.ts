@@ -7,7 +7,8 @@ import auth from '../../middlewares/auth';
 const router = express.Router();
 
 router.post(
-  '/',auth('admin'),
+  '/',
+  auth('admin'),
   validateRequest(tourValidations.createTourValidationSchema),
   tourControllers.createTour,
 );

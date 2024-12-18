@@ -1,3 +1,5 @@
+import QueryBuilder from '../../builder/QueryBuilder';
+import { searchableFields } from './tour.constant';
 import { ITour } from './tour.interface';
 import { Tour } from './tour.model';
 
@@ -6,8 +8,14 @@ const createTourIntoDB = async (payload: ITour) => {
   return result;
 };
 
-const getAllToursFromDB = async () => {
-  const result = await Tour.find();
+const getAllToursFromDB = async (query: Record<string, unknown>) => {
+  const tours = new QueryBuilder(Tour.find(), query)
+    .search(searchableFields)
+    .filter()
+    .paginate()
+    .sort()
+    .fields();
+  const result = await tours.modelQuery;
   return result;
 };
 
