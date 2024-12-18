@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
+import AppError from '../../helpers/error/AppError';
 import { Tour } from '../tour/tour.model';
 import { IBooking } from './booking.interface';
 import { Booking } from './booking.model';
@@ -10,7 +12,7 @@ const createBookingIntoDB = async (payload: IBooking): Promise<IBooking> => {
     const { tour, bookedSlots } = payload;
     const requiredTour = await Tour.findById(tour);
     if (!requiredTour) {
-      throw new Error('Tour not found');
+      throw new AppError(StatusCodes.NOT_FOUND, 'Tour Not Found');
     }
     const totalPrice = requiredTour.price * bookedSlots;
     payload.totalPrice = totalPrice;

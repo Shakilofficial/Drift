@@ -5,6 +5,8 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import notFound from './middlewares/notFound';
 import router from './routes';
 import sendResponse from './utils/sendResponse';
+import AppError from './helpers/error/AppError';
+import { StatusCodes } from 'http-status-codes';
 
 const app: Application = express();
 
@@ -34,6 +36,8 @@ app.get('/test', (req: Request, res: Response) => {
     data: null,
   });
 });
+
+
 
 //global error handler
 app.use(globalErrorHandler);

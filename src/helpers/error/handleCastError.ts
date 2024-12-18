@@ -1,19 +1,15 @@
 import mongoose from 'mongoose';
-import { TErrorResponse, TErrorSources } from '../../types/error';
+import { TErrorResponse } from '../../types/error';
 
-const handleCastError = (err: mongoose.Error.CastError): TErrorResponse => {
-  const errorSources: TErrorSources = [
+const handleCastError = (err: mongoose.Error.CastError): TErrorResponse => ({
+  statusCode: 400,
+  message: 'Invalid value for field 🔄',
+  errorSources: [
     {
-      path: err?.path,
-      message: err?.message,
+      path: err.path,
+      message: err.message,
     },
-  ];
-  const statusCode = 400;
-  return {
-    statusCode,
-    message: 'Cast Error 🔄',
-    errorSources,
-  };
-};
+  ],
+});
 
 export default handleCastError;

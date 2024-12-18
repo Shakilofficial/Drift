@@ -22,15 +22,18 @@ const registerValidationSchema = z.object({
       .string({ invalid_type_error: 'Password must be a string' })
       .trim()
       .min(6, { message: 'Password must be at least 6 characters long' })
-      .max(20, { message: 'Password must be at most 20 characters long' }),
+      .max(30, { message: 'Password must be at most 30 characters long' }),
     phone: z
       .string({ invalid_type_error: 'Phone number must be a string' })
       .trim()
       .min(10, { message: 'Phone number must be at least 10 digits long' })
       .max(15, { message: 'Phone number must be at most 15 digits long' })
-      .regex(/^\d{10}$/, { message: 'Phone number must be 10 digits long' }),
+      .regex(/^\d{10,15}$/, {
+        message: 'Phone number must be between 10 and 15 digits long',
+      }),
     photo: z
       .string({ invalid_type_error: 'Photo must be a string' })
+      .url({ message: 'Photo must be a valid URL if provided' })
       .optional(),
   }),
 });

@@ -12,7 +12,7 @@ const register = async (payload: IUSer) => {
 const login = async (payload: ILoginUser) => {
   const user = await User.findOne({ email: payload.email });
   if (!user) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'Status code not found');
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found 😢');
   }
 };
 

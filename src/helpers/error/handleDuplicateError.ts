@@ -1,22 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TErrorResponse, TErrorSources } from '../../types/error';
+import { TErrorResponse } from '../../types/error';
 
 const handleDuplicateError = (err: any): TErrorResponse => {
-  const match = err.message.match(/"([^"]*)"/);
-  // The extracted value will be in the first capturing group
-  const extractedMessage = match && match[1];
+  const field = Object.keys(err.keyValue || {})[0]; // Extract field from keyValue
+  const value = err.keyValue ? err.keyValue[field] : 'Unknown value';
 
-  const errorSources: TErrorSources = [
-    {
-      path: err?.key,
-      message: `Already exists ${extractedMessage}.Your request is rejected 🚫`,
-    },
-  ];
-  const statusCode = 400;
   return {
-    statusCode,
-    message: 'Duplicate Error',
-    errorSources,
+    statusCode: 400,
+    message: 'Duplicate value detected 🚫',
+    errorSources: [
+      {
+        path: field || 'unknown', // Use extracted field, fallback to 'unknown'
+        message: `The value "${value}" for the field "${field}" already exists.`,
+      },
+    ],
   };
 };
 
