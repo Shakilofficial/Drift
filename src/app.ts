@@ -1,18 +1,17 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
-
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import notFound from './middlewares/notFound';
 import router from './routes';
 import sendResponse from './utils/sendResponse';
-import AppError from './helpers/error/AppError';
-import { StatusCodes } from 'http-status-codes';
 
 const app: Application = express();
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 //Application Routes
 app.use('/api/v1', router);
@@ -36,8 +35,6 @@ app.get('/test', (req: Request, res: Response) => {
     data: null,
   });
 });
-
-
 
 //global error handler
 app.use(globalErrorHandler);

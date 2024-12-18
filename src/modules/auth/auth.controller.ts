@@ -17,11 +17,15 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await authServices.login(payload);
+  const { accessToken } = result;
+
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
     message: 'User logged in successfully 👤',
-    data: result,
+    data: {
+      accessToken,
+    },
   });
 });
 
